@@ -1,0 +1,6 @@
+extensions/
+zipped_extensions/
+unzipped_extensions/
+extensions_zero/
+crawl_zero.py
+myout.txt
