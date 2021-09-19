@@ -37,9 +37,9 @@ Among them, 20,622 crx file size 0 (no longer available)
 ## STEP4: filter out themes among extensions
 **filter_no_theme.py**  
 filter the crx directories in unzipped_extensions/, if 'theme' in manifest.json, then it is a theme.  
-With the code, we got: 
+With the code, we got:   
 19,289 themes listed in theme.txt  
-33 error in manifest.json listed in error_json.txt 
+33 error in manifest.json listed in error_json.txt   
 1 without manifest.json file  
 Finally,  
 145,130 extensions listed in filtered_file.txt  
