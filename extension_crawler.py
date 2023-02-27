@@ -3,23 +3,28 @@ from tqdm import tqdm
 
 def download(flag, id_list, path, url):
     exist = os.listdir(path + 'extensions')
-    for id in tqdm(id_list):
-        if id + '.crx' in exist:
-            continue
-        try:
-            print(url.format(id=id))
-            resp = requests.get(url.format(id=id))
-            print(resp)
-        except requests.exceptions.ProxyError:
-            time.sleep(1)
-            try:
-                resp = requests.get(url.format(id=id))
-            except Exception as e:
-                with open(path + 'download.log', 'a') as f:
-                    f.writelines([id + ' error in downloading.'])
+    with tqdm(desc="Downloading to File", total=len(id_list)) as pbar:
+        for id in (id_list):
+            if id + '.crx' in exist:
                 continue
-        with open(path + '/extensions/' + id + '.crx', 'wb') as f:
-            f.write(resp.content)
+            try:
+                print(url.format(id=id))
+                resp = requests.get(url.format(id=id))
+                print(resp)
+                with open(path + 'download.log', 'a') as f:
+                    f.write(url.format(id=id)+'\n')
+                    f.write(str(resp)+'\n')
+            except requests.exceptions.ProxyError:
+                time.sleep(1)
+                try:
+                    resp = requests.get(url.format(id=id))
+                except Exception as e:
+                    with open(path + 'download_error.log', 'a') as f:
+                        f.writelines([id + ' error in downloading.'])
+                    continue
+            with open(path + '/extensions/' + id + '.crx', 'wb') as f:
+                f.write(resp.content)
+            pbar.update(1)
     print('Thread No.' + str(flag) + ' end.')
         
 
@@ -35,17 +40,17 @@ url = "https://clients2.google.com/service/update2/crx?response=redirect&prodver
 path = './'
 if 'extensions' not in os.listdir(path):
     os.mkdir('extensions')
-if 'ids.txt' not in os.listdir(path):
-    print('ids.txt not found in the current path.')
+if 'known_ids.txt' not in os.listdir(path):
+    print('known_ids.txt not found in the current path.')
     sys.exit()
-with open(path + 'ids.txt', 'r') as f:
+with open(path + 'known_ids.txt', 'r') as f:
     ids = json.loads(f.read())
-thread_num = 200
+# thread_num = 200
 # ids = ids[:20]
 try:
     opts, args = getopt.getopt(sys.argv[1:], 't:', ['thread='])
 except getopt.GetoptError:
-    print('crawler.py [-t|--thread <thread_number>]')
+    print('extension_crawler.py [-t|--thread <thread_number>]')
     sys.exit()
 for opt, arg in opts:
     if opt in ('--thread', '-t'):
