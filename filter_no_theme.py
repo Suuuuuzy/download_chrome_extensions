@@ -55,7 +55,7 @@ def filter_run_with_threads(unzipdir, func=filter_no_theme, ):
     crxs = os.listdir(unzipdir)
     crxs = [i for i in crxs if not i.startswith('.')]
     step = len(crxs) // thread_num
-    print('Task started with %d threads.'%thread_num)
+    print('Filter task started with %d threads.'%thread_num)
     for i in range(thread_num - 1):
         t = threading.Thread(target=func, args=(i, crxs[flag:flag+step], unzipdir))
         t.start()

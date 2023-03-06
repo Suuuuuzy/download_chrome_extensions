@@ -3,6 +3,7 @@ from tqdm import tqdm
 
 def download(flag, id_list, path, url):
     exist = os.listdir(path + 'extensions')
+    print("Downloading  in Thread" + str(flag))
     with tqdm(desc="Downloading to File", total=len(id_list)) as pbar:
         for id in (id_list):
             if id + '.crx' in exist:
@@ -45,12 +46,15 @@ def crawl():
         sys.exit()
     with open(path + 'known_ids.txt', 'r') as f:
         ids = json.loads(f.read())
+    exist = os.listdir(path + 'extensions')
+    ids = [i for i in ids if i+'.crx' not in exist]
+    print("ids: ", len(ids))
     thread_num = 200
     # ids = ids[:20]
     threads = []
     flag = 0
     step = len(ids) // thread_num
-    print('Task started with %d threads.'%thread_num)
+    print('Crawl task started with %d threads.'%thread_num)
     for i in range(thread_num - 1):
         t = threading.Thread(target=download, args=(i, ids[flag:flag+step], path, url))
         t.start()

@@ -46,7 +46,7 @@ def run_with_threads(crxdir, zipdir, unzipdir, func = crx2unzip):
     files = os.listdir(crxdir)
     files = [i for i in files if not i.startswith(".")]
     unzips = os.listdir(unzipdir)
-    files = [i for i in files if i not in unzips]         
+    files = [i for i in files if i[:-4] not in unzips]         
     print(len(files), " crx files to extract")   
     step = len(files) // thread_num
     print('Task started with %d threads.'%thread_num)
