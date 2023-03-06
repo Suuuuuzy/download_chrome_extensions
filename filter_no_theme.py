@@ -48,7 +48,7 @@ def sum_all_files(prefix):
         os.remove(str(i) + prefix+'.txt')
 
 
-def run_with_threads(func, unzipdir):
+def filter_run_with_threads(unzipdir, func=filter_no_theme, ):
     thread_num = 200
     threads = []
     flag = 0
@@ -73,6 +73,6 @@ def run_with_threads(func, unzipdir):
 
     print('Task finished.')
 
-# run_with_threads(args.crxdir, crx2zip, args.crxdir, args.zipdir)
-run_with_threads(func = filter_no_theme, unzipdir = 'unzipped_extensions')
+if __name__ == "__main__":
+    filter_run_with_threads(unzipdir = '/media/data4/jianjia_data4/new_extension/unzipped_extensions')
 

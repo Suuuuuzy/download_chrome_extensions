@@ -27,47 +27,41 @@ def download(flag, id_list, path, url):
             pbar.update(1)
     print('Thread No.' + str(flag) + ' end.')
         
-
+def crawl():
 # url = 'https://clients2.google.com/service/update2/crx?response=redirect&prodversion=49.0&x=id%3D{id}%26installsource%3Dondemand%26uc'
 # url = 'https://clients2.google.com/service/update2/' + 'crx?response=redirect&nacl_arch=x86-64&' + 'prodversion=9999.0.9999.0&x=id%3D{id}%26uc'
 # url = 'https://www.crx4chrome.com/go.php?p=51576&s=1&l=https%3A%2F%2Ff6.crx4chrome.com%2Fcrx.php%3Fi%3D{id}%26v%3D1.99.9'
 # url = 'https://f6.crx4chrome.com/crx.php?i={id}&v=1.99.9&p=51576'
 # url = "https://clients2.google.com/service/update2/crx?response=redirect&prodversion=49.0&x=id%3D{id}%26installsource%3Dondemand%26uc"
-url = "https://clients2.google.com/service/update2/crx?response=redirect&prodversion=31.0.1609.0&acceptformat=crx2,crx3&x=id%3D{id}%26uc"
+    url = "https://clients2.google.com/service/update2/crx?response=redirect&prodversion=31.0.1609.0&acceptformat=crx2,crx3&x=id%3D{id}%26uc"
 
-#  elicpjhcidhpjomhibiffojpinpmmpil
+    #  elicpjhcidhpjomhibiffojpinpmmpil
 
-path = './'
-if 'extensions' not in os.listdir(path):
-    os.mkdir('extensions')
-if 'known_ids.txt' not in os.listdir(path):
-    print('known_ids.txt not found in the current path.')
-    sys.exit()
-with open(path + 'known_ids.txt', 'r') as f:
-    ids = json.loads(f.read())
-# thread_num = 200
-# ids = ids[:20]
-try:
-    opts, args = getopt.getopt(sys.argv[1:], 't:', ['thread='])
-except getopt.GetoptError:
-    print('extension_crawler.py [-t|--thread <thread_number>]')
-    sys.exit()
-for opt, arg in opts:
-    if opt in ('--thread', '-t'):
-        thread_num = int(arg)
-
-threads = []
-flag = 0
-step = len(ids) // thread_num
-print('Task started with %d threads.'%thread_num)
-for i in range(thread_num - 1):
-    t = threading.Thread(target=download, args=(i, ids[flag:flag+step], path, url))
+    path = './'
+    if 'extensions' not in os.listdir(path):
+        os.mkdir('extensions')
+    if 'known_ids.txt' not in os.listdir(path):
+        print('known_ids.txt not found in the current path.')
+        sys.exit()
+    with open(path + 'known_ids.txt', 'r') as f:
+        ids = json.loads(f.read())
+    thread_num = 200
+    # ids = ids[:20]
+    threads = []
+    flag = 0
+    step = len(ids) // thread_num
+    print('Task started with %d threads.'%thread_num)
+    for i in range(thread_num - 1):
+        t = threading.Thread(target=download, args=(i, ids[flag:flag+step], path, url))
+        t.start()
+        threads.append(t)
+        flag += step
+    t = threading.Thread(target=download, args=(thread_num - 1, ids[flag:], path, url))
     t.start()
     threads.append(t)
-    flag += step
-t = threading.Thread(target=download, args=(thread_num - 1, ids[flag:], path, url))
-t.start()
-threads.append(t)
-for t in threads:
-    t.join()
-print('Task finished.')
+    for t in threads:
+        t.join()
+    print('Task finished.')
+
+if __name__ == "__main__":
+    crawl()

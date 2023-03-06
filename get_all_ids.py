@@ -59,18 +59,22 @@ def get_new_ids(known_ids, max_ids=None):
             except StopIteration:
                 return
 
-filename = 'known_ids.txt'
-if os.path.isfile(filename):
-    with open(filename) as f:
-        known_ids = json.load(f)
-else:
-    known_ids = []
+def get_ids():
+    filename = 'known_ids.txt'
+    if os.path.isfile(filename):
+        with open(filename) as f:
+            known_ids = json.load(f)
+    else:
+        known_ids = []
 
-discovered_ids = list(get_new_ids(known_ids, 100000))
-known_ids.extend(discovered_ids)
-known_ids = list(set(known_ids))
-print(len(known_ids))
-with open(filename, 'w') as f:
-    json.dump(known_ids, f)
-print(len(known_ids))
+    discovered_ids = list(get_new_ids(known_ids, 100000))
+    known_ids.extend(discovered_ids)
+    known_ids = list(set(known_ids))
+    print(len(known_ids))
+    with open(filename, 'w') as f:
+        json.dump(known_ids, f)
+    print(len(known_ids))
 
+
+if __name__ == "__main__":
+    get_ids()
