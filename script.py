@@ -8,6 +8,6 @@ from extension_crawler import crawl
 from crx2unzip import run_with_threads
 # run_with_threads(crxdir='extensions', zipdir='/media/data4/jianjia_data4/new_extension/zipped_extensions', unzipdir='/media/data4/jianjia_data4/new_extension/unzipped_extensions')
 # STEP 4:
-# 133549 2023/3/5, in filtered_file.txt
+# 133549 2023/3/5, in filtered_file.txt, among them 33805 are mv3, in mv3/mv3Ids.txt
 from filter_no_theme import filter_run_with_threads
 filter_run_with_threads(unzipdir='/media/data4/jianjia_data4/new_extension/unzipped_extensions') 

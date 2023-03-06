@@ -61,5 +61,5 @@ def run_with_threads(func, unzipdir, idFile):
     print('Task finished.')
 
 # run_with_threads(args.crxdir, crx2zip, args.crxdir, args.zipdir)
-run_with_threads(func = filter_mv3, unzipdir = '../unzipped_extensions', idFile = '../filtered_file.txt')
+run_with_threads(func = filter_mv3, unzipdir = '/media/data4/jianjia_data4/new_extension/unzipped_extensions', idFile = '../filtered_file.txt')
 # run_with_threads(func = filter_mv3, unzipdir = '/Users/jia/Desktop/tmp/EOPG/run_JSCPG_merge/demos', idFile = '/Users/jia/Desktop/tmp/EOPG/run_JSCPG_merge/crx_lists/test.txt')
